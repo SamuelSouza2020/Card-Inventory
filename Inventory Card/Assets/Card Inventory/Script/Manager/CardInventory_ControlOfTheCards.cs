@@ -65,37 +65,46 @@ namespace CardInventory
             //{
             //}
         }
-        void FillList()
+        void FillList()//Fills the lists with card data, including rarity and amount information.
         {
+            const int CommonRarity = 2;
+            const int RareRarity = 1;
+            const int EpicRarity = 0;
+
             int cardDivision = CardsAllGame.Count / 3;
-            for (int count = 0; count < CardsAllGame.Count; count++)
+
+            FillAmountOfCards();
+            FillRarityOfCards(cardDivision, CommonRarity, RareRarity, EpicRarity);
+            ValidateListSizes();
+        }
+        void FillAmountOfCards()//Fills the amount lists with initial values for each card.
+        {
+            for (int i = 0; i < CardsAllGame.Count; i++)
             {
-                //Creating indexes and placing 0 elements
                 AmountOfCardInTheDeck.Add(0);
                 AmountOfCardInInventory.Add(0);
-
-                //I simply defined the rarity of the card. Having 3 points: Common(2), rare(1) and epic(0)
-                if (count < cardDivision)
-                    RarityOfCards.Add(2);
-                else if (count >= cardDivision && count < (cardDivision * 2))
-                    RarityOfCards.Add(1);
-                else
-                    RarityOfCards.Add(0);
             }
-            /*
-             * Space manually place the rarity of each element of the list "CardsAllGame".
-             * Example
-             * RarityOfCards.Add(0);
-             * RarityOfCards.Add(0);
-             * RarityOfCards.Add(1);
-             * In the sequence you put, will be added to the top-down list.
-             * Delete these comments and put it here. Delete line 82 to 90
-             */
-
-            //Checks whether the lists have the same amount of elements
+        }
+        //Assigns rarity values to the cards based on the provided divisions.
+        void FillRarityOfCards(int cardDivision, int commonRarity, int rareRarity, int epicRarity)
+        {
+            for (int i = 0; i < CardsAllGame.Count; i++)
+            {
+                if (i < cardDivision)
+                    RarityOfCards.Add(commonRarity);
+                else if (i < (cardDivision * 2))
+                    RarityOfCards.Add(rareRarity);
+                else
+                    RarityOfCards.Add(epicRarity);
+            }
+        }
+        //Ensures that the size of the rarity list matches the size of the card list and adjusts it if necessary.
+        void ValidateListSizes()
+        {
             if (RarityOfCards.Count != CardsAllGame.Count)
             {
                 int missingValue = CardsAllGame.Count - RarityOfCards.Count;
+
                 if (missingValue > 0)
                 {
                     for (int i = 0; i < missingValue; i++)
@@ -103,7 +112,7 @@ namespace CardInventory
                         RarityOfCards.Add(0);
                     }
                 }
-                else
+                else if (missingValue < 0)
                 {
                     for (int i = 0; i > missingValue; i--)
                     {
