@@ -43,27 +43,33 @@ namespace CardInventory
             SceneManager.sceneLoaded += LoadObjects;
         }
         /*
-         * Each time you change the scenario, this method is called.
-         * In this method you can place commands to be loaded in specific scenes
+         * This method is called each time the scenario changes.
+         * You can add commands here to be loaded in specific scenes.
          */
         void LoadObjects(Scene scena, LoadSceneMode mode)
         {
+            // Find and assign the necessary components and objects
             InventoryManager = GameObject.Find("InventoryManager").GetComponent<CardInventory_InventoryManager>();
             BuyManager = GameObject.Find("BuyManager").GetComponent<CardInventory_BuyManager>();
             NumberCardTMP = GameObject.Find("NumberCardsInTheDeck").GetComponent<TextMeshProUGUI>();
             YourMoneyTMP = GameObject.Find("YourMoneyTMP").GetComponent<TextMeshProUGUI>();
 
-
-            //This method will place the two lists with the same amount of index from the list "CardsAllGame"
+            // Populate the lists with the same number of elements as the "CardsAllGame" list
             FillList();
 
-            //To instantiate the cards
+            // Instantiate the player's cards
             InventoryManager.InstantiateCardsPlayer();
 
-            //The script called within the IF will identify the scenario number through Build Setting
-            //if (WhatScenario.instance.Phase == 0)
-            //{
-            //}
+            // The following code is commented out as it appears to be incomplete
+            // and requires further implementation
+            // It seems to be related to identifying the scenario number
+            // based on the current build settings
+            /*
+            if (WhatScenario.instance.Phase == 0)
+            {
+                // Implementation for a specific scenario
+            }
+            */
         }
         void FillList()//Fills the lists with card data, including rarity and amount information.
         {
@@ -81,6 +87,7 @@ namespace CardInventory
         {
             for (int i = 0; i < CardsAllGame.Count; i++)
             {
+                // Creating indexes and placing 0 elements
                 AmountOfCardInTheDeck.Add(0);
                 AmountOfCardInInventory.Add(0);
             }

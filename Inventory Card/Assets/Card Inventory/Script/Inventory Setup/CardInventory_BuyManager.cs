@@ -10,13 +10,16 @@ namespace CardInventory
 {
     public class CardInventory_BuyManager : MonoBehaviour
     {
+        private const int cardPrice = 20;
+
         [SerializeField]
-        Image _localResult;
+        Image localResult;
+
         [SerializeField]
         private List<float> arrangePercentage;
+
         List<float> percentageOfWinning = new List<float>();
-        [SerializeField]
-        int cardPrice = 20;
+
         public GameObject Alert;
 
         void Start()
@@ -63,22 +66,21 @@ namespace CardInventory
             {
                 //To disable the hold for the animation, simply place the code from line 40 up to line 47 as comment or remove
                 //Disables the object to show the card you won
-                if (_localResult.transform.GetChild(0).gameObject.activeSelf)
+                if (localResult.transform.GetChild(0).gameObject.activeSelf)
                 {
-                    _localResult.transform.GetChild(0).gameObject.SetActive(false);
-                    _localResult.GetComponent<Image>().enabled = false;
+                    localResult.transform.GetChild(0).gameObject.SetActive(false);
+                    localResult.GetComponent<Image>().enabled = false;
                 }
                 CardInventory_ControlOfTheCards.Instance.InventoryManager.BtBuy.interactable = false;
                 //Active Button Buy
                 StartCoroutine(CardAnimation());
 
                 //reduce money
-                MoreMoney(-20);
+                MoreMoney(-cardPrice);
                 //Active animation the card
                 //Commenting on the line below disables the animation
-                _localResult.transform.GetChild(0).gameObject.SetActive(true);
-                _localResult.transform.GetChild(0).GetComponent<Animator>().Play("ShoppingAnimation");
-
+                localResult.transform.GetChild(0).gameObject.SetActive(true);
+                localResult.transform.GetChild(0).GetComponent<Animator>().Play("ShoppingAnimation");
 
                 //Arranges the percentage of the list totaling 100 percent
                 float percentageSummed = 0;
@@ -105,7 +107,6 @@ namespace CardInventory
                             arrangePercentage[i + j] = endValue;
                             percentageSummed += endValue;
                         }
-                        Debug.Log(endValue);
                         //For the "For" not to cause loop
                         break;
                     }
@@ -148,14 +149,14 @@ namespace CardInventory
                     {
                         if (randomCard <= percentageOfWinning[i])
                         {
-                            _localResult.sprite = CardInventory_ControlOfTheCards.Instance.CardsAllGame[i];
+                            localResult.sprite = CardInventory_ControlOfTheCards.Instance.CardsAllGame[i];
                             WonCard(i);
                             break;
                         }
                     }
                     else if (randomCard <= percentageOfWinning[i] && randomCard > percentageOfWinning[i - 1])
                     {
-                        _localResult.sprite = CardInventory_ControlOfTheCards.Instance.CardsAllGame[i];
+                        localResult.sprite = CardInventory_ControlOfTheCards.Instance.CardsAllGame[i];
                         WonCard(i);
                         break;
                     }
@@ -221,7 +222,7 @@ namespace CardInventory
         IEnumerator CardAnimation()
         {
             yield return new WaitForSeconds(1f);
-            _localResult.GetComponent<Image>().enabled = true;
+            localResult.GetComponent<Image>().enabled = true;
             yield return new WaitForSeconds(0.5f);
             CardInventory_ControlOfTheCards.Instance.InventoryManager.BtBuy.interactable = true;
         }
